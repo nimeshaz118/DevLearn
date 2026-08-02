@@ -1,0 +1,59 @@
+@tailwind base;
+@tailwind components;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    font-family: 'Inter', system-ui, sans-serif;
+    @apply bg-gray-50 text-gray-900 dark:bg-gray-950 dark:text-gray-100;
+  }
+  code {
+    font-family: 'Fira Code', Consolas, Monaco, monospace;
+  }
+}
+
+@layer components {
+  .prose-custom h1 {
+    @apply text-3xl font-bold mb-4 mt-8 text-gray-900 dark:text-white;
+  }
+  .prose-custom h2 {
+    @apply text-2xl font-semibold mb-3 mt-6 text-gray-800 dark:text-gray-100;
+  }
+  .prose-custom h3 {
+    @apply text-xl font-semibold mb-2 mt-4 text-gray-800 dark:text-gray-200;
+  }
+  .prose-custom p {
+    @apply mb-4 leading-relaxed text-gray-700 dark:text-gray-300;
+  }
+  .prose-custom ul {
+    @apply list-disc list-inside mb-4 text-gray-700 dark:text-gray-300;
+  }
+  .prose-custom ol {
+    @apply list-decimal list-inside mb-4 text-gray-700 dark:text-gray-300;
+  }
+  .prose-custom pre {
+    @apply rounded-lg overflow-x-auto;
+  }
+  .prose-custom blockquote {
+    @apply border-l-4 border-primary-500 pl-4 italic my-4 text-gray-600 dark:text-gray-400;
+  }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  @apply bg-gray-100 dark:bg-gray-900;
+}
+::-webkit-scrollbar-thumb {
+  @apply bg-gray-300 dark:bg-gray-700 rounded-full;
+}
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-gray-400 dark:bg-gray-600;
+}
