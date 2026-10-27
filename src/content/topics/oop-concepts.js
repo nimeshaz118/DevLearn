@@ -1,4 +1,4 @@
-import { text, heading, code, callout, image, quiz } from '../../utils/contentParser.js'
+import { text, heading, code, callout, diagram, list, quiz } from '../../utils/contentParser.js'
 
 export const oopConcepts = {
   id: 'oop-concepts',
@@ -11,6 +11,18 @@ export const oopConcepts = {
   sections: [
     heading(1, 'Object-Oriented Programming'),
     text('OOP is a programming paradigm based on the concept of "objects" that contain data and code. The four pillars of OOP are:'),
+    diagram('The four OOP pillars', [
+      { label: 'Encapsulation', detail: 'Protect state behind behavior' },
+      { label: 'Abstraction', detail: 'Expose the essential contract' },
+      { label: 'Inheritance', detail: 'Reuse a genuine is-a relationship' },
+      { label: 'Polymorphism', detail: 'One contract, different behavior' },
+    ], 'The pillars work together to keep object models understandable and changeable.'),
+    list([
+      'Encapsulation keeps state changes behind a clear public API.',
+      'Abstraction exposes what a type does while hiding internal detail.',
+      'Inheritance models a true is-a relationship and reuses a base contract.',
+      'Polymorphism lets several implementations satisfy the same contract.',
+    ]),
 
     heading(2, '1. Encapsulation'),
     text('Encapsulation is the bundling of data and methods that operate on that data within a single unit (class), and restricting direct access to some components.'),

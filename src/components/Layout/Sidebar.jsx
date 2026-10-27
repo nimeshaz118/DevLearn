@@ -3,7 +3,7 @@ import { Link, useLocation } from 'react-router-dom'
 import { ChevronDown, ChevronRight, Circle, X } from 'lucide-react'
 import { categories, topicsByCategory } from '../../content/index.js'
 
-export default function Sidebar({ isOpen, onClose }) {
+export default function Sidebar({ isOpen, onClose, isCollapsed }) {
   const location = useLocation()
   const [expandedCats, setExpandedCats] = useState(() => {
     const cats = categories.map(category => category.name)
@@ -72,7 +72,7 @@ export default function Sidebar({ isOpen, onClose }) {
 
   return (
     <>
-      <aside className="sticky top-16 hidden h-[calc(100vh-4rem)] w-72 shrink-0 overflow-y-auto border-r border-slate-200 bg-slate-50 lg:block dark:border-slate-800 dark:bg-slate-950">
+      <aside className={`sticky top-16 hidden h-[calc(100vh-4rem)] shrink-0 overflow-y-auto border-r border-slate-200 bg-slate-50 transition-[width] duration-200 lg:block dark:border-slate-800 dark:bg-slate-950 ${isCollapsed ? 'invisible w-0 pointer-events-none border-r-0' : 'visible w-72'}`} aria-hidden={isCollapsed}>
         {navigation}
       </aside>
       {isOpen && <button className="fixed inset-0 z-40 bg-slate-950/50 backdrop-blur-sm lg:hidden" onClick={onClose} aria-label="Close navigation" />}

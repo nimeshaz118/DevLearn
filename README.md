@@ -44,60 +44,47 @@ npm run build
 
 ## How to Add a New Topic
 
-### Step 1: Create a Topic File
+### Step 1: Add the lesson to its category file
 
-Create a new file in `src/content/topics/` (e.g., `dependency-injection.js`):
+Open the relevant file in `src/content/topics/` and create the lesson with `createLesson`. The factory keeps every lesson consistent: overview, diagram, key ideas, example, takeaway, and quiz.
 
 ```javascript
-import { text, heading, code, callout, quiz } from '../../utils/contentParser.js'
+import { createLesson } from '../topicFactory.js'
 
-export const dependencyInjection = {
+export const dependencyInjection = createLesson({
   id: 'dependency-injection',
   title: 'Dependency Injection',
   description: 'Learn how to inject dependencies in .NET applications.',
   category: 'C# & .NET',    // Must match a category name in content/index.js
-  status: 'published',
-  tags: ['csharp', 'di', 'ioc', 'dotnet'],
-  date: '2026-08-02',
-  estimatedReadTime: 10,
-  sections: [
-    heading(1, 'Dependency Injection'),
-    text('Dependency Injection (DI) is a design pattern...'),
-
-    heading(2, 'Constructor Injection'),
-    code('csharp', `public class OrderService
-{
-    private readonly IRepository _repo;
-
-    public OrderService(IRepository repo)
-    {
-        _repo = repo;
-    }
-}`, 'OrderService.cs'),
-
-    callout('Prefer constructor injection over property injection for required dependencies.', 'tip'),
-
-    quiz(
-      'Which DI lifetime creates a new instance per request?',
-      ['Singleton', 'Scoped', 'Transient', 'Singleton per thread'],
-      1,
-      'Scoped lifetime creates one instance per HTTP request in ASP.NET Core.'
-    )
-  ]
-}
+  tags: ['csharp', 'di', 'dotnet'],
+  overview: 'Dependency injection gives a class its collaborators from outside...',
+  diagramTitle: 'Constructor injection',
+  diagramSteps: [
+    { label: 'Registration', detail: 'Map a contract to an implementation' },
+    { label: 'Container', detail: 'Build the object graph' },
+    { label: 'Constructor', detail: 'Receive required services' },
+  ],
+  concepts: ['Dependencies stay explicit.', 'Lifetimes control ownership.'],
+  exampleIntro: 'Register a service and receive it through the constructor.',
+  language: 'csharp',
+  filename: 'DependencyInjection.cs',
+  example: 'builder.Services.AddScoped<IService, Service>();',
+  takeaway: 'Prefer constructor injection for required dependencies.',
+  quizQuestion: 'Which lifetime creates one instance per request?',
+  quizOptions: ['Singleton', 'Scoped', 'Transient'],
+  quizAnswer: 1,
+  quizExplanation: 'Scoped services are shared within one request scope.',
+})
 ```
 
 ### Step 2: Register the Topic
 
-Open `src/content/index.js`, import the lesson, and replace its matching `plannedTopic(...)` entry:
+Export the lesson from its category array. `src/content/index.js` already combines those arrays:
 
 ```javascript
-import { dependencyInjection } from './topics/dependency-injection.js'
-
-export const allTopics = [
-  // ...other lessons
+export const dotnetTopics = [
   dependencyInjection,
-  // ...other lessons
+  // other C# and .NET lessons
 ]
 ```
 
@@ -109,7 +96,7 @@ The topic automatically appears in:
 - Search results
 - Its own URL at `/topic/dependency-injection`
 
-The roadmap entry can exist before the content does. Planned lessons use `plannedTopic(...)`, appear in search and navigation, and show a clean “Planned lesson” page until their content file is registered.
+The lesson automatically gains a page outline, searchable metadata, category navigation, and the standard visual content layout.
 
 ---
 
@@ -123,6 +110,7 @@ Import these helpers from `src/utils/contentParser.js`:
 | `heading(level, content)` | Section heading | `heading(2, 'Subtopic')` |
 | `code(language, content, filename?)` | Code block | `code('csharp', '...', 'Program.cs')` |
 | `image(src, alt, caption?)` | Image/diagram | `image('/diagram.png', 'Class diagram')` |
+| `diagram(title, steps[], caption?)` | Responsive process diagram | `diagram('Request flow', steps)` |
 | `quiz(question, options[], correctIndex, explanation?)` | Interactive quiz | `quiz('Q?', ['A','B'], 0, 'Because...')` |
 | `tryIt(instructions, starterCode, language?)` | Code exercise | `tryIt('Fix this...', 'code...')` |
 | `list(items[], ordered?)` | Bullet/numbered list | `list(['a', 'b'])` |
@@ -138,7 +126,7 @@ When you want to add a new topic:
 
 1. **You send me** the raw text/content (bullet points, code, explanations)
 2. **I format it** into the structured JS format above
-3. **You drop the file** into `src/content/topics/` and register it in `index.js`
+3. **I add it** to the matching category file in `src/content/topics/`
 4. **Done** — no UI changes needed
 
 ---
@@ -151,7 +139,7 @@ edu-blog/
 │   ├── components/
 │   │   ├── Layout/          # Header, Sidebar, ThemeToggle
 │   │   ├── UI/              # SearchBar, TopicCard, TagBadge
-│   │   └── Content/         # CodeBlock, Quiz, TryItYourself, ImageDiagram, ContentRenderer
+│   │   └── Content/         # CodeBlock, Quiz, ConceptDiagram, ImageDiagram, ContentRenderer
 │   ├── pages/               # Home, TopicPage, SearchResults
 │   ├── content/
 │   │   ├── index.js         # Registry of all topics

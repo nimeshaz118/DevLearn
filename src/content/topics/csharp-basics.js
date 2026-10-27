@@ -1,4 +1,4 @@
-import { text, heading, code, callout, list, quiz } from '../../utils/contentParser.js'
+import { text, heading, code, callout, diagram, list, quiz } from '../../utils/contentParser.js'
 
 export const csharpBasics = {
   id: 'csharp-basics',
@@ -11,6 +11,12 @@ export const csharpBasics = {
   sections: [
     heading(1, 'C# Basics'),
     text('C# is a modern, object-oriented programming language developed by Microsoft. It is part of the .NET ecosystem and is widely used for building web, desktop, and mobile applications.'),
+    diagram('From source code to a running program', [
+      { label: 'C# source', detail: 'Strongly typed .cs files' },
+      { label: 'Compiler', detail: 'Produces intermediate language' },
+      { label: '.NET runtime', detail: 'Loads and compiles the program' },
+      { label: 'Application', detail: 'Runs on the target platform' },
+    ], 'The .NET runtime provides memory management, type safety, and a large standard library.'),
 
     heading(2, 'Variables and Data Types'),
     text('In C#, you declare a variable by specifying its type followed by its name.'),

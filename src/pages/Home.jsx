@@ -61,7 +61,7 @@ export default function Home() {
           <div>
             <p className="mb-2 text-xs font-semibold uppercase tracking-[0.18em] text-primary-600 dark:text-primary-400">Library roadmap</p>
             <h2 className="text-2xl font-bold tracking-tight text-slate-950 sm:text-3xl dark:text-white">Learning tracks</h2>
-            <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-600 dark:text-slate-400">Each track contains focused lessons. Planned lessons are already searchable and ready for content.</p>
+            <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-600 dark:text-slate-400">Each track contains focused lessons with diagrams, practical code, takeaways, and quick knowledge checks.</p>
           </div>
           <span className="hidden text-sm text-slate-500 sm:block dark:text-slate-400">{categories.length} tracks</span>
         </div>
@@ -83,7 +83,7 @@ export default function Home() {
                 <div className="mt-4 flex items-center gap-2 text-xs text-slate-500 dark:text-slate-500">
                   <span>{topics.length} lessons</span>
                   <span aria-hidden="true">•</span>
-                  <span>{publishedCount > 0 ? `${publishedCount} published` : 'Coming soon'}</span>
+                  <span>{publishedCount} published</span>
                 </div>
               </Link>
             )
@@ -94,7 +94,7 @@ export default function Home() {
       <section>
         <div className="mb-6">
           <p className="mb-2 text-xs font-semibold uppercase tracking-[0.18em] text-primary-600 dark:text-primary-400">Start reading</p>
-          <h2 className="text-2xl font-bold tracking-tight text-slate-950 sm:text-3xl dark:text-white">Published lessons</h2>
+          <h2 className="text-2xl font-bold tracking-tight text-slate-950 sm:text-3xl dark:text-white">All lessons</h2>
         </div>
         <div className="grid gap-4 md:grid-cols-2">
           {publishedTopics.map(topic => <TopicCard key={topic.id} topic={topic} />)}
