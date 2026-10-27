@@ -55,7 +55,8 @@ export const dependencyInjection = {
   id: 'dependency-injection',
   title: 'Dependency Injection',
   description: 'Learn how to inject dependencies in .NET applications.',
-  category: 'C#',           // Used for sidebar grouping
+  category: 'C# & .NET',    // Must match a category name in content/index.js
+  status: 'published',
   tags: ['csharp', 'di', 'ioc', 'dotnet'],
   date: '2026-08-02',
   estimatedReadTime: 10,
@@ -88,25 +89,27 @@ export const dependencyInjection = {
 
 ### Step 2: Register the Topic
 
-Open `src/content/index.js` and add your import + export:
+Open `src/content/index.js`, import the lesson, and replace its matching `plannedTopic(...)` entry:
 
 ```javascript
 import { dependencyInjection } from './topics/dependency-injection.js'
 
 export const allTopics = [
-  csharpBasics,
-  oopConcepts,
-  dependencyInjection,  // <-- Add here
+  // ...other lessons
+  dependencyInjection,
+  // ...other lessons
 ]
 ```
 
 ### Step 3: Done!
 
 The topic automatically appears in:
-- Home page grid
+- Published lessons on the home page
 - Sidebar navigation (under its category)
 - Search results
 - Its own URL at `/topic/dependency-injection`
+
+The roadmap entry can exist before the content does. Planned lessons use `plannedTopic(...)`, appear in search and navigation, and show a clean “Planned lesson” page until their content file is registered.
 
 ---
 

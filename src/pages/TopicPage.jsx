@@ -1,5 +1,5 @@
 import { useParams, Link } from 'react-router-dom'
-import { ArrowLeft, Clock, Calendar, Hash } from 'lucide-react'
+import { ArrowLeft, Clock, Calendar, Hash, CircleDashed, BookOpen } from 'lucide-react'
 import { getTopicById } from '../content/index.js'
 import ContentRenderer from '../components/Content/ContentRenderer.jsx'
 
@@ -14,6 +14,36 @@ export default function TopicPage() {
         <p className="text-gray-600 dark:text-gray-400 mb-4">The topic you're looking for doesn't exist.</p>
         <Link to="/" className="text-primary-600 hover:underline">Go back home</Link>
       </div>
+    )
+  }
+
+  if (topic.status === 'planned') {
+    return (
+      <article className="mx-auto max-w-3xl py-6 sm:py-12">
+        <Link to="/" className="mb-8 inline-flex items-center text-sm text-slate-500 transition-colors hover:text-primary-600 dark:text-slate-400 dark:hover:text-primary-400">
+          <ArrowLeft className="mr-1.5 h-4 w-4" />
+          Back to learning tracks
+        </Link>
+        <div className="rounded-3xl border border-slate-200 bg-white p-7 shadow-sm sm:p-10 dark:border-slate-800 dark:bg-slate-900">
+          <span className="inline-flex items-center gap-1.5 rounded-full bg-amber-50 px-3 py-1 text-xs font-semibold text-amber-700 ring-1 ring-amber-200 dark:bg-amber-950/40 dark:text-amber-300 dark:ring-amber-900">
+            <CircleDashed className="h-3.5 w-3.5" />
+            Planned lesson
+          </span>
+          <p className="mt-7 text-sm font-medium text-primary-600 dark:text-primary-400">{topic.category}</p>
+          <h1 className="mt-2 text-3xl font-bold tracking-tight text-slate-950 sm:text-4xl dark:text-white">{topic.title}</h1>
+          <p className="mt-4 text-base leading-7 text-slate-600 dark:text-slate-300">{topic.description}</p>
+          <div className="mt-8 flex items-start gap-3 rounded-2xl bg-slate-50 p-4 dark:bg-slate-950/60">
+            <BookOpen className="mt-0.5 h-5 w-5 shrink-0 text-primary-500" />
+            <div>
+              <p className="text-sm font-medium text-slate-900 dark:text-slate-100">Content will be added next</p>
+              <p className="mt-1 text-sm leading-6 text-slate-600 dark:text-slate-400">This page is already connected to navigation and search. When the raw notes are ready, they can be converted into the site’s reusable learning blocks.</p>
+            </div>
+          </div>
+          <div className="mt-6 flex flex-wrap gap-2">
+            {topic.tags.map(tag => <span key={tag} className="inline-flex items-center rounded-full bg-slate-100 px-2.5 py-1 text-xs text-slate-600 dark:bg-slate-800 dark:text-slate-300"><Hash className="mr-0.5 h-3 w-3" />{tag}</span>)}
+          </div>
+        </div>
+      </article>
     )
   }
 
