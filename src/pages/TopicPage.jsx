@@ -1,11 +1,13 @@
+import { useState } from 'react'
 import { useParams, Link } from 'react-router-dom'
-import { ArrowLeft, Clock, Calendar, Hash, CircleDashed, BookOpen } from 'lucide-react'
+import { ArrowLeft, Clock, Calendar, Hash, CircleDashed, BookOpen, ListTree, PanelRightClose, PanelRightOpen } from 'lucide-react'
 import { getTopicById } from '../content/index.js'
-import ContentRenderer from '../components/Content/ContentRenderer.jsx'
+import ContentRenderer, { getContentHeadings } from '../components/Content/ContentRenderer.jsx'
 
 export default function TopicPage() {
   const { topicId } = useParams()
   const topic = getTopicById(topicId)
+  const [isOutlineOpen, setIsOutlineOpen] = useState(true)
 
   if (!topic) {
     return (
@@ -47,10 +49,12 @@ export default function TopicPage() {
     )
   }
 
+  const outline = getContentHeadings(topic.sections).filter(item => item.level === 2)
+
   return (
-    <div>
+    <article>
       {/* Breadcrumb & Meta */}
-      <div className="mb-6">
+      <div className="mb-6 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm sm:p-8 dark:border-slate-800 dark:bg-slate-900">
         <Link 
           to="/" 
           className="inline-flex items-center text-sm text-gray-500 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors mb-4"
@@ -90,13 +94,35 @@ export default function TopicPage() {
               </span>
             ))}
           </div>
+          {outline.length > 0 && (
+            <button onClick={() => setIsOutlineOpen(open => !open)} className="ml-auto inline-flex items-center gap-1.5 rounded-lg border border-slate-200 px-3 py-1.5 text-xs font-medium text-slate-600 transition hover:border-primary-300 hover:text-primary-600 dark:border-slate-700 dark:text-slate-300 dark:hover:border-primary-700 dark:hover:text-primary-300" aria-expanded={isOutlineOpen}>
+              {isOutlineOpen ? <PanelRightClose className="h-3.5 w-3.5" /> : <PanelRightOpen className="h-3.5 w-3.5" />}
+              {isOutlineOpen ? 'Hide outline' : 'Show outline'}
+            </button>
+          )}
         </div>
       </div>
 
-      <hr className="border-gray-200 dark:border-gray-800 mb-8" />
-
-      {/* Content */}
-      <ContentRenderer sections={topic.sections} />
-    </div>
+      <div className={`grid items-start gap-8 ${isOutlineOpen && outline.length > 0 ? 'xl:grid-cols-[minmax(0,1fr)_15rem]' : ''}`}>
+        <div className="min-w-0 rounded-2xl border border-slate-200 bg-white px-5 py-2 shadow-sm sm:px-8 dark:border-slate-800 dark:bg-slate-900">
+          <ContentRenderer sections={topic.sections} />
+        </div>
+        {isOutlineOpen && outline.length > 0 && (
+          <aside className="order-first rounded-2xl border border-slate-200 bg-white p-4 shadow-sm xl:order-none xl:sticky xl:top-24 dark:border-slate-800 dark:bg-slate-900">
+            <div className="mb-3 flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.14em] text-slate-500 dark:text-slate-400">
+              <ListTree className="h-4 w-4 text-primary-500" />
+              On this page
+            </div>
+            <nav aria-label="Lesson outline" className="space-y-1">
+              {outline.map(item => (
+                <a key={item.id} href={`#${item.id}`} className="block rounded-lg px-2.5 py-2 text-sm text-slate-600 transition hover:bg-primary-50 hover:text-primary-700 dark:text-slate-400 dark:hover:bg-primary-900/20 dark:hover:text-primary-300">
+                  {item.label}
+                </a>
+              ))}
+            </nav>
+          </aside>
+        )}
+      </div>
+    </article>
   )
 }

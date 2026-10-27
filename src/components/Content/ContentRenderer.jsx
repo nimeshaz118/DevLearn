@@ -2,6 +2,7 @@ import CodeBlock from './CodeBlock.jsx'
 import Quiz from './Quiz.jsx'
 import TryItYourself from './TryItYourself.jsx'
 import ImageDiagram from './ImageDiagram.jsx'
+import ConceptDiagram from './ConceptDiagram.jsx'
 import { Info, AlertTriangle, Lightbulb, AlertOctagon } from 'lucide-react'
 
 const calloutIcons = {
@@ -30,7 +31,9 @@ function Callout({ content, variant = 'info' }) {
   )
 }
 
-function Heading({ level, content }) {
+const toAnchor = (content, index) => `${content.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '') || 'section'}-${index}`
+
+function Heading({ level, content, index }) {
   const Tag = `h${Math.min(Math.max(level, 1), 6)}`
   const classes = {
     h1: 'text-3xl font-bold mb-4 mt-8 text-gray-900 dark:text-white',
@@ -40,7 +43,7 @@ function Heading({ level, content }) {
     h5: 'text-base font-semibold mb-1 mt-2 text-gray-800 dark:text-gray-300',
     h6: 'text-sm font-semibold mb-1 mt-2 text-gray-800 dark:text-gray-300 uppercase tracking-wide',
   }
-  return <Tag className={classes[Tag]}>{content}</Tag>
+  return <Tag id={toAnchor(content, index)} className={`${classes[Tag]} scroll-mt-24`}>{content}</Tag>
 }
 
 function Text({ content }) {
@@ -69,7 +72,7 @@ export default function ContentRenderer({ sections }) {
           case 'text':
             return <Text key={index} content={section.content} />
           case 'heading':
-            return <Heading key={index} level={section.level} content={section.content} />
+            return <Heading key={index} level={section.level} content={section.content} index={index} />
           case 'code':
             return (
               <CodeBlock 
@@ -88,6 +91,8 @@ export default function ContentRenderer({ sections }) {
                 caption={section.caption} 
               />
             )
+          case 'diagram':
+            return <ConceptDiagram key={index} title={section.title} steps={section.steps} caption={section.caption} />
           case 'quiz':
             return (
               <Quiz 
@@ -118,3 +123,9 @@ export default function ContentRenderer({ sections }) {
     </div>
   )
 }
+
+export const getContentHeadings = sections => sections
+  .map((section, index) => section.type === 'heading' && section.level <= 2
+    ? { id: toAnchor(section.content, index), label: section.content, level: section.level }
+    : null)
+  .filter(Boolean)

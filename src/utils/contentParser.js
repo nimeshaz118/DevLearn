@@ -5,6 +5,7 @@ export const sectionTypes = {
   TEXT: 'text',
   CODE: 'code',
   IMAGE: 'image',
+  DIAGRAM: 'diagram',
   QUIZ: 'quiz',
   TRY_IT: 'tryIt',
   HEADING: 'heading',
@@ -40,6 +41,16 @@ export const image = (src, alt, caption = '') => ({
   src,
   alt,
   caption
+})
+
+/**
+ * Create an accessible concept or process diagram from labelled steps.
+ */
+export const diagram = (title, steps, caption = '') => ({
+  type: sectionTypes.DIAGRAM,
+  title,
+  steps,
+  caption,
 })
 
 /**
